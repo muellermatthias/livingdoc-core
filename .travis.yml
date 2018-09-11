@@ -15,7 +15,12 @@ install:
   - export M2_HOME=$PWD/apache-maven-3.0
   - export PATH=$M2_HOME/bin:$PATH
   - mvn -version
-
+  - echo "Downloading Gradle 2.14";
+  - wget https://services.gradle.org/distributions/gradle-2.14-bin.zip || travis_terminate 1
+  - mkdir /opt/gradle
+  - unzip -d /opt/gradle gradle-2.14-bin.zip
+  - export PATH=/opt/gradle/gradle-2.14/bin:$PATH
+  - gradle -v
 script:
-  - mvn clean
-  - mvn verify
+  - gradle clean
+  - gradle install

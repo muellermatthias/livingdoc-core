@@ -1,0 +1,2 @@
+tasks.all {it.dependsOn ':livingdoc-core:install'}
+tasks.all {it.dependsOn ':livingdoc-client:install'}

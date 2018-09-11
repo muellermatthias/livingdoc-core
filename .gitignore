@@ -18,6 +18,10 @@ target/
 **.classpath
 **.eclipse-pmd
 
+# Gradle
+.gradle
+**/build/
+
 # /client/
 /client/deploy.bat
 /client/.wtpmodules

@@ -1,0 +1,7 @@
+rootProject.name = 'livingdoc'
+include ':livingdoc-core'
+include ':livingdoc-client'
+include ':livingdoc-samples'
+include ':livingdoc-cli'
+include ':livingdoc-remote-agent'
+include ':livingdoc-maven'

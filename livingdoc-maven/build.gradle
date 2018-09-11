@@ -1,0 +1,1 @@
+tasks.all {it.dependsOn ':livingdoc-cli:install'}

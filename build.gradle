@@ -1,0 +1,98 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+
+project.ext.cmd = []
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    project.ext.cmd = ['cmd', '/c', 'mvn']
+} else {
+    project.ext.cmd = ['mvn']
+}
+
+allprojects {
+    group = 'info.novatec.testit'
+    version = '1.3-SNAPSHOT'
+}
+
+task clean(type: Exec){
+    commandLine project.cmd
+    args 'clean', '-N'
+}
+
+task install(type: Exec){
+    commandLine project.cmd
+    args 'install', '-N'
+}
+
+project.ext.listOfNonMigratedModules =[
+        'livingdoc-core',
+        'livingdoc-client',
+        'livingdoc-cli',
+        'livingdoc-maven',
+        'livingdoc-samples',
+        'livingdoc-remote-agent',
+]
+project.ext.nonMigratedModules = subprojects.findAll{
+    project.listOfNonMigratedModules.contains(it.name)
+}
+
+configure(project.nonMigratedModules){
+    task compileJava(type: Exec){
+        commandLine project.cmd
+        args 'compile'
+    }
+
+    task classes(type: Exec){
+        commandLine project.cmd
+        args 'compile'
+    }
+
+    task test(type: Exec){
+        commandLine project.cmd
+        args 'test'
+    }
+
+    task jar(type: Exec){
+        commandLine project.cmd
+        args 'package'
+    }
+
+    task assemble(type: Exec){
+        commandLine project.cmd
+        args 'verify'
+    }
+
+    task check(type: Exec){
+        commandLine project.cmd
+        args 'verify'
+    }
+
+    task build(type: Exec){
+        commandLine project.cmd
+        args 'verify'
+    }
+
+    task install(type: Exec){
+        commandLine project.cmd
+        args 'install'
+    }
+    tasks.all {it.dependsOn ':install'}
+
+    task clean(type: Exec){
+        commandLine project.cmd
+        args 'clean'
+    }
+}
+
+project.ext.mavenParameters = []
+if(project.hasProperty('profiles')){
+    project.mavenParameters.addAll('-P',project.getProperty('profiles'))
+}
+if (project.hasProperty('gpg.passphrase')) {
+    project.mavenParameters.add('-Dgpg.passphrase=' + project.getProperty('gpg.passphrase'))
+}
+if (project.hasProperty('ossrh.username')) {
+    project.mavenParameters.add('-Dossrh.username=' + project.getProperty('ossrh.username'))
+}
+if (project.hasProperty('ossrh.password')) {
+    project.mavenParameters.add('-Dossrh.password=' + project.getProperty('ossrh.password'))
+}
